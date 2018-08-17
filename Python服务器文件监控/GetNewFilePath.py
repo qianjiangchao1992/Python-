@@ -4,8 +4,8 @@ import paramiko
 conf={
     'host_ip':'192.168.8.145',
     'port':22,
-    'username':'RIOpenApi4UMC',
-    'password':'OArich@139.com'
+    'username':'************',
+    'password':'************'
 }
 def filenames(path):
     with open(path,'r') as f:
