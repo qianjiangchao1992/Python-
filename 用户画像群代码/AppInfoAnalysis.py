@@ -7,7 +7,7 @@ class AppAnalysis():
         self.data.columns=['mobile','appname','classifyname']
     def get_appname(self):
         data_appname=self.data.appname.value_counts()
-        counts=data_appname.sum()
+        counts=self.data['mobile'].drop_duplicates().count()
         result={}
         result['MainClass'] = {'APP名称_MainClass_Equal': {'ClassifyValue': dict(data_appname)}}
         result['MainClassTotal'] = {'APP名称汇总': counts}

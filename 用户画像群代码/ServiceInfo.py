@@ -1,6 +1,7 @@
 import GetNewFilePath
 import paramiko
 import os
+import time
 path = r'F:\data_resource\file_xzt\filenames\service_filename.txt'
 severse_path = '/home/appSys/RIOpenApi4UMC/xzt1/service'
 new_path=(GetNewFilePath.new_filenamepath(path, severse_path))
@@ -18,11 +19,14 @@ def getfilename(path):
         return filename
 data_path=[]
 if len(new_path)==0:
-    print('服务器还没有上传新service文件！')
+    print('服务器还没有上传新Service文件！')
 else:
-    print("发现新service文件")
+    print("发现新Service文件")
+    start_time = time.time()
     for name in new_path:
         paths=name
         localfilename=name.split('/')[-1]
         sftp_down_file(paths, r"F:\data_resource\file_xzt\service\%s"%(localfilename))
         data_path.append(r"F:\data_resource\file_xzt\service\%s" % (localfilename))
+    end_time = time.time()
+    print('下载新Service文件所花时间为%f' % (end_time - start_time))

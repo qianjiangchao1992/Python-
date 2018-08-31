@@ -121,13 +121,14 @@ class BaseAnalysis():
     def get_star_type(self):
         data_star_type = self.data.star_type.value_counts()
         dicts = {}
-        dicts['0星用户'] = data_star_type[(data_star_type.index==0)|(data_star_type.index==-999)].sum()
-        dicts['1星用户'] = data_star_type[(data_star_type.index==1)].sum()
-        dicts['2星用户'] = data_star_type[(data_star_type.index==2)].sum()
-        dicts['3星用户'] = data_star_type[(data_star_type.index==3)].sum()
-        dicts['4星用户'] = data_star_type[(data_star_type.index==4)].sum()
-        dicts['5星用户'] = data_star_type[(data_star_type.index==5)].sum()
-        dicts['5星以上用户'] = data_star_type[(data_star_type.index>=6)].sum()
+        list_0_5=['0','1','2','3','4','5','-999','一星级','二星级','三星级','四星级','五星级','未评级']
+        dicts['0星用户'] = data_star_type[(data_star_type.index=='0')|(data_star_type.index=='-999')|(data_star_type.index=='未评级')].sum()
+        dicts['1星用户'] = data_star_type[(data_star_type.index=='1')|(data_star_type.index=='一星级')].sum()
+        dicts['2星用户'] = data_star_type[(data_star_type.index=='2')|(data_star_type.index=='二星级')].sum()
+        dicts['3星用户'] = data_star_type[(data_star_type.index=='3')|(data_star_type.index=='三星级')].sum()
+        dicts['4星用户'] = data_star_type[(data_star_type.index=='4')|(data_star_type.index=='四星级')].sum()
+        dicts['5星用户'] = data_star_type[(data_star_type.index=='5')|(data_star_type.index=='五星级')].sum()
+        dicts['5星以上用户'] = data_star_type[(data_star_type.index.isin([x for x in list(data_star_type.index) if x not in list_0_5 ]))].sum()
         result = {}
         result['MainClass'] = {'用户星级_MainClass_Equal': {'ClassifyValue': dicts}}
         result['MainClassTotal'] = {'用户星级汇总': self.data.star_type.count()}

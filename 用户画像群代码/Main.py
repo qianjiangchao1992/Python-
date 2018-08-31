@@ -22,6 +22,7 @@ if filenums :
         app=AppInfoAnalysis.AppAnalysis(AppInfo_path[filenumber]).get_appname()
         app_classify=AppInfoAnalysis.AppAnalysis(AppInfo_path[filenumber]).get_classifyname()
         service=ServiceInfoAnalysis.ServiceAnalysis(ServiceInfo_path[filenumber]).get_service()
+        start_type=BaseInfoAnalysis.BaseAnalysis(BaseInfo_path[filenumber]).get_star_type()
         end_time=time.time()
         print(age)
         print(sex)
@@ -33,8 +34,11 @@ if filenums :
         print(app)
         print(app_classify)
         print(service)
-        print('程序运行时间为:%f'%(end_time-start_time))
+        print(start_type)
+        print('第%d文件程序运行时间为:%f'%((filenumber+1),(end_time-start_time)))
+        print('*************\n*************\n第%d个文件数据分析完毕\n*************\n*************\n'%(filenumber+1))
 else:
     print('没有发现新文件，继续扫描')
+
 
 
