@@ -18,9 +18,9 @@ def getfilename(path):
         return filename
 data_path=[]
 if len(new_path)==0:
-    print('服务器还没有上传新文件！')
+    print('服务器还没有上传basic新文件！')
 else:
-    print("发现新文件")
+    print("发现新basic文件")
     for name in new_path:
         paths=name
         localfilename=name.split('/')[-1]

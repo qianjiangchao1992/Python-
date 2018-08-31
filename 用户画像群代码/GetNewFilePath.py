@@ -41,4 +41,4 @@ def new_filenamepath(path,severse_path):
                 f.write(name+'\n')
         return result_names
     except:
-        return None
+        return []
