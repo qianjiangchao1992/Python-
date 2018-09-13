@@ -3,11 +3,7 @@ import pandas as pd
 class BaseAnalysis():
     def __init__(self,datapath):
         self.datapath=datapath
-        self.data=pd.read_table(self.datapath, delimiter='|', encoding='utf-8',low_memory=False)
-        self.data.columns=['mobile', 'sex', 'age', 'brand', 'model', 'listing_date',
-           'listing_price', 'netlong', 'card_type', 'star_type', 'owner_city',
-           'arpu', 'out_prdct_fee', 'myth_fee', 'point_fee', 'credit_limit',
-           'credit_payment_avg','location']
+        self.data=pd.read_table(self.datapath, delimiter='|', encoding='utf-8',low_memory=False,dtype={'star_type':str})
     def get_sex(self):
         data_sex=self.data.sex.value_counts()
         result={}
@@ -36,7 +32,7 @@ class BaseAnalysis():
         result['MainClassTotal'] = {'年龄汇总': self.data.age.count()}
         return result
     def get_brand_model(self):
-        brands=[ '华为荣耀', '苹果', '小米', 'OPPO', 'vivo', '三星', '魅族', '360', '联想']
+        brands=[ '华为','华为荣耀', '苹果', '小米', 'OPPO', 'vivo', '三星', '魅族', '360', '联想','乐视','金立']
         data_brand_model=self.data[['brand','model']][self.data.brand.isin(brands)]
         dict_new={}
         for i in brands:
@@ -53,7 +49,7 @@ class BaseAnalysis():
                         else:
                             pass
             dict_new[i]={'ClassifyValue':data_model_dict_new,'ChildClassTotal':len(self.data[self.data.brand==i])}
-        dict_new.update(荣耀=dict_new.pop('华为荣耀'))
+        #dict_new.update(荣耀=dict_new.pop('华为荣耀'))
         dict_class={}
         dict_class['ChildClass']=dict_new
         dict_result={}
@@ -65,11 +61,12 @@ class BaseAnalysis():
         dicts = {}
         for i in range(2000, 2019):
             for j in dict(data_listing_date).items():
-                if j[0][:4] == str(i):
-                    if (str(i)+'年') not in dicts.keys():
-                        dicts[str(i)+'年'] = int(j[1])
+                print(j)
+                if str(j[0])[:4] == str(i):
+                    if (str(i)) not in dicts.keys():
+                        dicts[str(i)] = int(j[1])
                     else:
-                        dicts[str(i)+'年'] += int(j[1])
+                        dicts[str(i)] += int(j[1])
         result = {}
         result['MainClass'] = {'上市时间_MainClass_Range': {'ClassifyValue': dicts}}
         result['MainClassTotal'] = {'上市时间汇总': self.data.listing_date.count()}
@@ -105,7 +102,7 @@ class BaseAnalysis():
         dicts['36月以上'] =data_result[data_result.index>=36].sum()
         result={}
         result['MainClass'] = {'在网时长_MainClass_Range': {'ClassifyValue': dicts}}
-        result['MainClassTotal'] = {'在网时长汇总': self.data.age.count()}
+        result['MainClassTotal'] = {'在网时长汇总': data_result.sum()}
         return result
     def get_card_type(self):
         data_card_type=self.data.card_type.value_counts()
@@ -116,7 +113,7 @@ class BaseAnalysis():
         dicts['大众卡']=data_card_type[data_card_type.index==4].sum()
         result={}
         result['MainClass'] = {'手机卡品牌_MainClass_Equal': {'ClassifyValue': dicts}}
-        result['MainClassTotal'] = {'手机卡品牌汇总': self.data.age.count()}
+        result['MainClassTotal'] = {'手机卡品牌汇总': self.data.card_type.count()}
         return result
     def get_star_type(self):
         data_star_type = self.data.star_type.value_counts()
@@ -154,7 +151,7 @@ class BaseAnalysis():
         results={}
         city_renshu_allprovince=pd.Series(data=city['人数'],dtype=np.int32)
         try:
-            for i in ['北京市','天津市','重庆市','上海市']:
+            for i in list(zhixiacity.keys()):
                 results[i]={'ClassifyValue':{i:zhixiacity[i]},'ChildClassTotal':zhixiacity[i]}
         except:
             pass
