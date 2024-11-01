@@ -5,8 +5,8 @@ class GetStatus():
     def get_status(self):
         try:
             conn=pymysql.connect(host='192.168.7.31',
-                                 user='ngoss_dim',
-                                 password='ngoss_dim',
+                                 user='xxxxx',
+                                 password='xxxxx',
                                  database='label_support',
                                  charset='utf8')
             curson=conn.cursor()
